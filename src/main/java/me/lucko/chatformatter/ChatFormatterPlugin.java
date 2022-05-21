@@ -104,14 +104,14 @@ public class ChatFormatterPlugin extends JavaPlugin implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onChatLow(AsyncPlayerChatEvent e) {
         // Set out format on the lowest priority - allow other plugins to override or add their own parts.
-        e.setFormat(this.format);
+        e.setFormat(PlaceholderAPI.setPlaceholders(e.getPlayer(), this.format));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onChatHigh(AsyncPlayerChatEvent e) {
         // Replace our placeholders on highest - just before
         Player player = e.getPlayer();
-        String format = PlaceholderAPI.setPlaceholders(player, e.getFormat());
+        String format = e.getFormat();
 
         if (this.vaultChat != null) {
             format = replaceAll(PREFIX_PLACEHOLDER_PATTERN, format, () -> colorize(this.vaultChat.getPlayerPrefix(player)));
