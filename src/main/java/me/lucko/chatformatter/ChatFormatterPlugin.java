@@ -1,10 +1,11 @@
 package me.lucko.chatformatter;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.milkbowl.vault.chat.Chat;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -109,13 +110,14 @@ public class ChatFormatterPlugin extends JavaPlugin implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onChatHigh(AsyncPlayerChatEvent e) {
         // Replace our placeholders on highest - just before
-        String format = e.getFormat();
+        Player player = e.getPlayer();
+        String format = PlaceholderAPI.setPlaceholders(player, e.getFormat());
 
         if (this.vaultChat != null) {
-            format = replaceAll(PREFIX_PLACEHOLDER_PATTERN, format, () -> colorize(this.vaultChat.getPlayerPrefix(e.getPlayer())));
-            format = replaceAll(SUFFIX_PLACEHOLDER_PATTERN, format, () -> colorize(this.vaultChat.getPlayerSuffix(e.getPlayer())));
+            format = replaceAll(PREFIX_PLACEHOLDER_PATTERN, format, () -> colorize(this.vaultChat.getPlayerPrefix(player)));
+            format = replaceAll(SUFFIX_PLACEHOLDER_PATTERN, format, () -> colorize(this.vaultChat.getPlayerSuffix(player)));
         }
-        format = replaceAll(NAME_PLACEHOLDER_PATTERN, format, () -> e.getPlayer().getName());
+        format = replaceAll(NAME_PLACEHOLDER_PATTERN, format, player::getName);
 
         e.setFormat(format);
     }

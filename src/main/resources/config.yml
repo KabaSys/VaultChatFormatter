@@ -15,4 +15,6 @@
 # {message} ==> the message being sent by the player
 #
 # Standard Minecraft color codes can be used in the format.
+#
+# Added support for use PlaceholderAPI variables by CleusGamer201
 format: "<{prefix}{name}{suffix}> {message}"

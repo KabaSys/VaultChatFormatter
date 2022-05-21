@@ -3,7 +3,7 @@ version: ${project.version}
 main: me.lucko.chatformatter.ChatFormatterPlugin
 description: ${project.description}
 author: Luck
-depend: [Vault]
+depend: [Vault, PlaceholderAPI]
 api-version: 1.13
 
 commands:
